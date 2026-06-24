@@ -1,39 +1,41 @@
 # map.py
 import pygame
 from obstacle import Obstacle, PASSABLE, COLORS
-from constants import ROWS, COLS, TILE_SIZE   
+from constants import ROWS, COLS, TILE_SIZE
+
+
 class Map:
     def __init__(self, level=2):
         self.grid = [[Obstacle.EMPTY] * COLS for _ in range(ROWS)]
         self.load_level(f"levels/level{level}.txt")
+
         self.images = {
             Obstacle.BRICK: pygame.transform.scale(
                 pygame.image.load("assets/brick.png"),
                 (TILE_SIZE, TILE_SIZE)
-        ),
+            ),
             Obstacle.STEEL: pygame.transform.scale(
                 pygame.image.load("assets/steel.png"),
                 (TILE_SIZE, TILE_SIZE)
-        ),
+            ),
             Obstacle.WATER: pygame.transform.scale(
                 pygame.image.load("assets/water.png"),
                 (TILE_SIZE, TILE_SIZE)
-        ),
+            ),
             Obstacle.FOREST: pygame.transform.scale(
                 pygame.image.load("assets/forest.png"),
                 (TILE_SIZE, TILE_SIZE)
-        ),
+            ),
             Obstacle.BASE: pygame.transform.scale(
                 pygame.image.load("assets/base.png"),
                 (TILE_SIZE, TILE_SIZE)
-        ),
-    }
-    
+            ),
+        }
+
     def load_level(self, filename):
-        
         with open(filename, "r") as f:
             lines = [line.strip() for line in f.readlines()]
-        
+
         mapping = {
             ".": Obstacle.EMPTY,
             "B": Obstacle.BRICK,
@@ -42,7 +44,7 @@ class Map:
             "F": Obstacle.FOREST,
             "X": Obstacle.BASE,
         }
-        
+
         for y, row in enumerate(lines):
             for x, char in enumerate(row):
                 self.grid[y][x] = mapping.get(
@@ -59,7 +61,7 @@ class Map:
     def get_tile(self, x, y):
         if 0 <= x < COLS and 0 <= y < ROWS:
             return self.grid[y][x]
-        return Obstacle.STEEL 
+        return Obstacle.STEEL
 
     def is_passable(self, x, y):
         return PASSABLE.get(self.get_tile(x, y), False)
@@ -84,9 +86,9 @@ class Map:
                         screen,
                         color,
                         (
-                         col * TILE_SIZE,
-                         row * TILE_SIZE,
-                         TILE_SIZE,
-                         TILE_SIZE
+                            col * TILE_SIZE,
+                            row * TILE_SIZE,
+                            TILE_SIZE,
+                            TILE_SIZE
                         )
                     )
